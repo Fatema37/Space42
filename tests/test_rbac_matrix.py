@@ -1,15 +1,9 @@
-"""Data-driven security matrix: one test per row of data/security_matrix.csv.
+"""One test per row of data/security_matrix.csv.
 
-Columns: id, area, actor, method, path, target, payload, expected, classification,
-         severity, owasp, observed, rule
-  actor           the name of any identity fixture in auth_fixtures.py (anonymous, normal_user, admin_user, ...)
-  target          self -> the actor's own id      other -> another_user's id
-  path/payload    {id} -> the target id; {admin_username} -> the admin's username (resolved at run time)
-  payload         key=value pairs separated by ';' (request body), empty for GET/DELETE
-  classification  contract -> expected PASS;  security_hypothesis -> strict xfail = documented finding
-  severity/owasp  shown in the report and findings table (finding rows only)
-  observed        the status seen when the matrix was written; the report flags it if it changes
-Add a row to add a test; this file does not change."""
+actor    = an identity fixture name (anonymous, normal_user, admin_user, ...)
+target   = self (actor's id) or other (another_user's id)
+payload  = key=value;key=value; {id} and {admin_username} fill in at run time
+Add a row to add a test — this file doesn't change."""
 import csv
 from pathlib import Path
 
@@ -31,7 +25,7 @@ def load_matrix():
 
 
 def _payload(text):
-    """'a=1;b=x' -> {"a": 1, "b": "x"} (digits become ints, like a JSON body would carry)."""
+    """'a=1;b=x' -> {"a": 1, "b": "x"} (digits become ints)."""
     if not text:
         return None
     pairs = (kv.split("=", 1) for kv in text.split(";"))
@@ -40,7 +34,7 @@ def _payload(text):
 
 @pytest.mark.parametrize("row", load_matrix())
 def test_security_matrix(row, request, another_user):
-    actor = request.getfixturevalue(row["actor"])      # any identity fixture, looked up by name
+    actor = request.getfixturevalue(row["actor"])      # the fixture named in the CSV
     target_id = actor.user_id if row["target"] == "self" else another_user.user_id
 
     subs = {"id": target_id}
@@ -50,7 +44,7 @@ def test_security_matrix(row, request, another_user):
     payload = _payload(row["payload"].format(**subs)) if row["payload"] else None
 
     body, status = actor.api_client.request(row["method"], path, json=payload)
-    request.node.actual_status = status        # shown as "Actual" in the HTML matrix table
+    request.node.actual_status = status        # recorded for the report
 
     assert status == int(row["expected"]), (
         f"{row['id']} — {row['rule']}: {row['actor']} {row['method']} {path} "

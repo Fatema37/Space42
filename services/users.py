@@ -23,7 +23,7 @@ def search(api_client, q, **params):
 
 
 def find_users_by_role(api_client, role, limit=1):
-    """Discover real users per role at runtime (the sandbox exposes passwords)."""
+    """Find users with a given role (their passwords are exposed, which is how we log in)."""
     body, status = filter_by(api_client, "role", role, limit=limit)
     return body.get("users", []) if status == 200 else []
 

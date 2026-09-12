@@ -1,4 +1,4 @@
-"""Shared plumbing fixtures. Identities live in auth_fixtures.py, reporting in utils/reporting.py."""
+"""Shared fixtures. Identities are in auth_fixtures.py, reporting in utils/reporting.py."""
 import pytest
 
 from config import get_settings
@@ -14,7 +14,7 @@ def settings():
 
 @pytest.fixture(scope="session")
 def make_client(settings):
-    """Factory: an APIClient for a token (None = anonymous). keep_cookies=True only for cookie tests."""
+    """Build an APIClient for a token (None = anonymous)."""
     def _make(token=None, keep_cookies=False):
         return APIClient(settings.base_url, token=token, keep_cookies=keep_cookies,
                          timeout=settings.request_timeout, max_retries=settings.max_retries)

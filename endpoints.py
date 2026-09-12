@@ -1,5 +1,4 @@
-"""All DummyJSON API paths in one place. Services import from here; no HTTP happens
-in this file. `/auth/...` paths require a token."""
+"""API paths, one class per resource. /auth/... needs a token."""
 
 
 class AuthAPI:

@@ -1,5 +1,4 @@
-"""HTTP client: returns (body, status), retries transient failures, and logs every
-request/response with secrets redacted. No assertions here."""
+"""HTTP client. Returns (body, status), retries transient failures, redacts secrets in logs."""
 import http.cookiejar
 import logging
 
@@ -11,7 +10,7 @@ from utils.redact import redact, scrub_text
 
 log = logging.getLogger("space42")
 
-# Every request made in this process (redacted). conftest slices it per test for the report.
+# every request, redacted; sliced per test for the report
 CALLS: list[dict] = []
 
 
@@ -27,12 +26,11 @@ class APIClient:
         self.last_headers = {}     # response headers of the most recent call (never logged)
 
         self.session = requests.Session()
-        # Login returns the token as a Set-Cookie; a persisted cookie would make later
-        # "anonymous" calls authenticated. Identity = the header only — except for the
-        # cookie-session tests, which opt in with keep_cookies=True.
+        # login sets the token as a cookie; if we kept it, "anonymous" calls would be
+        # authenticated. auth comes from the header only, unless a test opts in.
         if not keep_cookies:
             self.session.cookies.set_policy(http.cookiejar.DefaultCookiePolicy(allowed_domains=[]))
-        # Retry transient failures on idempotent methods only (a timed-out POST may have succeeded).
+        # retry idempotent methods only — a timed-out POST may have gone through
         retry = Retry(
             total=max_retries, backoff_factor=1, status_forcelist=(429, 502, 503, 504),
             allowed_methods=frozenset({"GET", "PUT", "DELETE"}), raise_on_status=False,

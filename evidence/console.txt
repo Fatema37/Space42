@@ -93,4 +93,4 @@ contract checks passed: 38    findings: 21
   [medium][rbac     ] identity fields such as id must be immutable
   [medium][rbac     ] a user must not take another user's username
 - Generated html report: file:///Users/fatemar/Desktop/space42/reports/report.html -
-======================= 38 passed, 21 xfailed in 23.78s ========================
+======================= 38 passed, 21 xfailed in 35.76s ========================

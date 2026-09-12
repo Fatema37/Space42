@@ -1,5 +1,4 @@
-"""Identity fixtures — the people a test can act as. Loaded by conftest.py (pytest_plugins).
-Each is built once per session: find a user with the role in /users -> log in -> AuthContext."""
+"""The identities tests act as. Built once per session: find a user by role, then log in."""
 from dataclasses import dataclass, field
 
 import pytest
@@ -9,7 +8,7 @@ from services import auth, users
 
 @dataclass(frozen=True)
 class AuthContext:
-    """One identity: who (role, user) + an api_client already carrying its token."""
+    """An identity: who it is + a client already carrying its token."""
     role: str
     user_id: int
     username: str
@@ -30,9 +29,7 @@ def _login_context(user, make_client, role) -> AuthContext:
 
 
 def _discover(make_client, role, want=1):
-    """Return `want` real users for a role. A shortfall is a hard failure, not a skip:
-    an empty result almost always means the API is unreachable, and a skipped-but-green
-    run would hide that."""
+    """Find `want` users for a role. Fail (not skip) if short — usually means the API is down."""
     found = users.find_users_by_role(make_client(), role, limit=want)
     if len(found) < want:
         pytest.fail(f"could not discover {want} user(s) with role={role!r} "

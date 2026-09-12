@@ -1,7 +1,5 @@
-"""Users service contract: the checks that let a finding be told apart from documented
-behaviour. Pure-functional REST features (pagination, sort, field-select, free-text search)
-are intentionally not tested here — this is a security assessment, not an API conformance
-suite. Writes are SIMULATED by the sandbox (echoed, not persisted) — asserted as such."""
+"""Users contract checks. Functional REST features (paging, sort, search) are left out —
+this is a security assessment. Writes are simulated (echoed, not saved)."""
 import pytest
 
 from models import User
@@ -20,7 +18,7 @@ class TestGetUser:
     def test_existing_user_matches_schema(self, anonymous, normal_user):
         body, status = users.get_user(anonymous.api_client, normal_user.user_id)
         assert status == 200
-        assert User(**body).id == normal_user.user_id                 # schema oracle
+        assert User(**body).id == normal_user.user_id                 # check the shape
 
     @pytest.mark.negative
     def test_unknown_id_returns_404(self, anonymous):
@@ -33,7 +31,7 @@ class TestGetUser:
         assert status == 400 and "message" in body
 
     def test_filter_by_role_returns_only_that_role(self, anonymous):
-        # The framework relies on this call to discover a user per role at run time.
+        # discovery uses this call to pick a user per role
         body, status = users.filter_by(anonymous.api_client, "role", "admin", select="role")
         assert status == 200 and body["users"]
         assert all(u["role"] == "admin" for u in body["users"])

@@ -1,7 +1,4 @@
-"""Data exposure: sensitive fields must not leak through responses, errors, logs or reports.
-
-contract            = DummyJSON's documented behaviour (expected PASS)
-security_hypothesis = what a production service should do; strict xfail = documented finding"""
+"""Sensitive fields must not leak through responses, errors, or our own logs."""
 import pytest
 
 from services import auth, users
@@ -9,7 +6,7 @@ from utils.redact import redact
 
 pytestmark = pytest.mark.exposure
 
-# Fields that must never appear in any API response, whoever asks.
+# must never appear in a response
 SENSITIVE = {"password", "ssn", "ein", "bank", "crypto"}
 
 

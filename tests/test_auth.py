@@ -1,7 +1,5 @@
-"""All combinations for the 3 auth operations: login, me, refresh.
-
-contract            = DummyJSON's documented behaviour (expected PASS)
-security_hypothesis = what a production service should do; strict xfail = documented finding"""
+"""login / me / refresh. contract = documented (should pass); security_hypothesis = secure
+behaviour DummyJSON lacks (xfail = finding)."""
 import base64
 import json
 
@@ -21,13 +19,13 @@ class TestLogin:
         user = users.find_users_by_role(anonymous.api_client, "user")[0]      # real creds from /users
         body, status = auth.login(anonymous.api_client, user["username"], user["password"])
         assert status == 200
-        parsed = LoginResponse(**body)                                  # schema oracle
+        parsed = LoginResponse(**body)                                  # check the shape
         assert parsed.id == user["id"] and parsed.username == user["username"]
         assert parsed.accessToken and parsed.refreshToken
 
     @pytest.mark.contract
     def test_requested_expiry_is_honoured(self, normal_user):
-        # Read the JWT payload: its lifetime (exp - iat) must equal the expiresInMins we asked for.
+        # token lifetime (exp - iat) should match what we asked for
         payload = normal_user.access_token.split(".")[1]
         claims = json.loads(base64.urlsafe_b64decode(payload + "=" * (-len(payload) % 4)))
         assert claims["exp"] - claims["iat"] == auth.TOKEN_TTL_MINS * 60

@@ -1,14 +1,13 @@
-"""Replace sensitive values with *** before anything is logged."""
+"""Mask secrets before logging."""
 import re
 
-# Case-insensitive substring match on dict keys ("token" also covers accessToken etc.).
+# matched against dict keys, substring + case-insensitive ("token" covers accessToken)
 SENSITIVE_KEYS = (
     "authorization", "password", "token", "secret", "cookie",
     "ssn", "ein", "bank", "card", "iban", "crypto", "wallet",
 )
 
-# JWT-shaped strings and Bearer tokens that can appear inside a free-text value
-# (e.g. a non-JSON error body) where there is no key name to match on.
+# tokens sitting inside a plain string (e.g. a non-JSON error body), no key to match on
 _JWT_RE = re.compile(r"eyJ[A-Za-z0-9_-]{4,}(?:\.[A-Za-z0-9_-]+){1,2}")
 _BEARER_RE = re.compile(r"(Bearer\s+)\S+", re.IGNORECASE)
 

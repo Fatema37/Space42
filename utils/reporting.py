@@ -1,12 +1,5 @@
-"""Readable reporting (loaded by conftest.py via pytest_plugins).
-
-Every test gets a one-line description, an area, and the API calls it made. From that:
-  - HTML report: a Description column, plus three tables above the results —
-    the security matrix (expected vs actual), all other test cases (with the APIs
-    they called), and the findings.
-  - Console: a grouped "security summary" at the end of the run.
-  - reports/findings.md: the findings as a markdown table, for the README.
-"""
+"""Report helpers (loaded via pytest_plugins). Adds a Description column and the matrix /
+test-case / findings tables to the HTML report, a console summary, and reports/findings.md."""
 import html
 import json
 from pathlib import Path

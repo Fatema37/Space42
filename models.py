@@ -1,5 +1,4 @@
-"""Pydantic response models — the schema oracle for contract tests.
-Extra fields are ignored, so a new field in the sandbox doesn't break the suite."""
+"""Expected response shapes. Extra fields are ignored."""
 from pydantic import BaseModel
 
 
