@@ -1,0 +1,23 @@
+id,area,actor,method,path,target,payload,expected,classification,severity,owasp,observed,rule
+R01,auth,anonymous,GET,/auth/users/{id},other,,401,contract,-,-,401,protected read requires a token
+R02,auth,anonymous,GET,/auth/carts/user/{id},other,,401,contract,-,-,401,protected cart read requires a token
+R03,auth,anonymous,PUT,/users/{id},other,lastName=Test,401,security_hypothesis,medium,API5,200,writes must require authentication
+R04,auth,anonymous,DELETE,/users/{id},other,,401,security_hypothesis,medium,API5,200,deletes must require authentication
+R05,ownership,normal_user,GET,/auth/users/{id},self,,200,contract,-,-,200,a user can read their own record
+R06,ownership,normal_user,GET,/auth/users/{id},other,,403,security_hypothesis,high,API1,200,a user must not read another user's record
+R07,ownership,normal_user,PUT,/auth/users/{id},self,lastName=Test,200,contract,-,-,200,a user can update their own record
+R08,ownership,normal_user,PUT,/auth/users/{id},other,lastName=Test,403,security_hypothesis,high,API1,200,a user must not modify another user's record
+R09,ownership,normal_user,DELETE,/auth/users/{id},other,,403,security_hypothesis,high,API1,200,a user must not delete another user's record
+R10,ownership,normal_user,GET,/auth/carts/user/{id},self,,200,contract,-,-,200,a user can read their own carts
+R11,ownership,normal_user,GET,/auth/carts/user/{id},other,,403,security_hypothesis,high,API1,200,a user must not read another user's carts
+R12,rbac,normal_user,PUT,/auth/users/{id},self,role=admin,403,security_hypothesis,high,API3,200,a user must not escalate their own role
+R13,rbac,admin_user,GET,/auth/users/{id},other,,200,contract,-,-,200,an admin can read any user
+R14,rbac,admin_user,PUT,/auth/users/{id},other,lastName=Test,200,contract,-,-,200,an admin can update any user
+R15,rbac,admin_user,DELETE,/auth/users/{id},other,,200,contract,-,-,200,an admin can delete any user (simulated by the sandbox)
+R16,rbac,admin_user,GET,/auth/carts/user/{id},other,,200,contract,-,-,200,an admin can read any user's carts
+R17,auth,anonymous,PUT,/auth/users/{id},other,lastName=Test,401,contract,-,-,401,protected write requires a token
+R18,auth,anonymous,DELETE,/auth/users/{id},other,,401,contract,-,-,401,protected delete requires a token
+R19,auth,anonymous,POST,/users/add,-,username=newadmin;password=x;role=admin,401,security_hypothesis,high,API5,201,account creation must require authentication (anyone can create an admin)
+R20,ownership,anonymous,GET,/users/{id}/carts,other,,401,security_hypothesis,high,API1,200,a user's carts must not be readable without authentication
+R21,rbac,normal_user,PUT,/auth/users/{id},self,id=1,400,security_hypothesis,medium,API3,200,identity fields such as id must be immutable
+R22,rbac,normal_user,PUT,/auth/users/{id},self,username={admin_username},409,security_hypothesis,medium,API3,200,a user must not take another user's username

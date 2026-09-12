@@ -1,0 +1,96 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.13, pytest-8.3.4, pluggy-1.6.0 -- /Users/fatemar/Desktop/space42/.venv/bin/python
+cachedir: .pytest_cache
+metadata: {'Python': '3.12.13', 'Platform': 'macOS-15.3.1-arm64-arm-64bit', 'Packages': {'pytest': '8.3.4', 'pluggy': '1.6.0'}, 'Plugins': {'html': '4.1.1', 'metadata': '3.1.1'}, 'Target': 'https://dummyjson.com'}
+rootdir: /Users/fatemar/Desktop/space42
+configfile: pytest.ini
+testpaths: tests
+plugins: html-4.1.1, metadata-3.1.1
+collecting ... collected 59 items
+
+tests/test_auth.py::TestLogin::test_valid_credentials_return_tokens PASSED [  1%]
+tests/test_auth.py::TestLogin::test_requested_expiry_is_honoured PASSED  [  3%]
+tests/test_auth.py::TestLogin::test_wrong_password_rejected PASSED       [  5%]
+tests/test_auth.py::TestLogin::test_wrong_password_and_unknown_user_look_identical PASSED [  6%]
+tests/test_auth.py::TestLogin::test_missing_credentials_rejected PASSED  [  8%]
+tests/test_auth.py::TestLogin::test_invalid_expiry_rejected_with_400 XFAIL [ 10%]
+tests/test_auth.py::TestMe::test_valid_token_returns_own_user PASSED     [ 11%]
+tests/test_auth.py::TestMe::test_no_token_rejected PASSED                [ 13%]
+tests/test_auth.py::TestMe::test_anonymous_stays_anonymous_after_a_login_on_the_same_client PASSED [ 15%]
+tests/test_auth.py::TestMe::test_invalid_token_rejected_with_401 XFAIL   [ 16%]
+tests/test_auth.py::TestMe::test_refresh_token_not_accepted_as_access_token XFAIL [ 18%]
+tests/test_auth.py::TestMe::test_tampered_token_is_rejected PASSED       [ 20%]
+tests/test_auth.py::TestMe::test_alg_none_token_is_rejected PASSED       [ 22%]
+tests/test_auth.py::TestRefresh::test_valid_refresh_token_issues_usable_access_token PASSED [ 23%]
+tests/test_auth.py::TestRefresh::test_missing_refresh_token_rejected PASSED [ 25%]
+tests/test_auth.py::TestRefresh::test_invalid_refresh_token_rejected PASSED [ 27%]
+tests/test_auth.py::TestRefresh::test_access_token_not_accepted_as_refresh_token XFAIL [ 28%]
+tests/test_auth.py::TestCookieSession::test_login_sets_httponly_secure_cookies PASSED [ 30%]
+tests/test_auth.py::TestCookieSession::test_cookie_alone_authenticates_me PASSED [ 32%]
+tests/test_auth.py::TestCookieSession::test_cookie_has_samesite_attribute XFAIL [ 33%]
+tests/test_auth.py::TestCookieSession::test_cookie_alone_cannot_change_data XFAIL [ 35%]
+tests/test_auth.py::TestCookieSession::test_cors_does_not_allow_credentials_from_any_origin XFAIL [ 37%]
+tests/test_data_exposure.py::TestUserResponses::test_public_user_list_has_no_sensitive_fields XFAIL [ 38%]
+tests/test_data_exposure.py::TestUserResponses::test_public_single_user_has_no_sensitive_fields XFAIL [ 40%]
+tests/test_data_exposure.py::TestUserResponses::test_me_has_no_password_even_for_owner XFAIL [ 42%]
+tests/test_data_exposure.py::TestUserResponses::test_login_response_has_no_password PASSED [ 44%]
+tests/test_data_exposure.py::TestErrorResponses::test_errors_reveal_nothing_internal PASSED [ 45%]
+tests/test_data_exposure.py::TestLogRedaction::test_redaction_masks_sensitive_values PASSED [ 47%]
+tests/test_rbac_matrix.py::test_security_matrix[R01] PASSED              [ 49%]
+tests/test_rbac_matrix.py::test_security_matrix[R02] PASSED              [ 50%]
+tests/test_rbac_matrix.py::test_security_matrix[R03] XFAIL (FINDING:...) [ 52%]
+tests/test_rbac_matrix.py::test_security_matrix[R04] XFAIL (FINDING:...) [ 54%]
+tests/test_rbac_matrix.py::test_security_matrix[R05] PASSED              [ 55%]
+tests/test_rbac_matrix.py::test_security_matrix[R06] XFAIL (FINDING:...) [ 57%]
+tests/test_rbac_matrix.py::test_security_matrix[R07] PASSED              [ 59%]
+tests/test_rbac_matrix.py::test_security_matrix[R08] XFAIL (FINDING:...) [ 61%]
+tests/test_rbac_matrix.py::test_security_matrix[R09] XFAIL (FINDING:...) [ 62%]
+tests/test_rbac_matrix.py::test_security_matrix[R10] PASSED              [ 64%]
+tests/test_rbac_matrix.py::test_security_matrix[R11] XFAIL (FINDING:...) [ 66%]
+tests/test_rbac_matrix.py::test_security_matrix[R12] XFAIL (FINDING:...) [ 67%]
+tests/test_rbac_matrix.py::test_security_matrix[R13] PASSED              [ 69%]
+tests/test_rbac_matrix.py::test_security_matrix[R14] PASSED              [ 71%]
+tests/test_rbac_matrix.py::test_security_matrix[R15] PASSED              [ 72%]
+tests/test_rbac_matrix.py::test_security_matrix[R16] PASSED              [ 74%]
+tests/test_rbac_matrix.py::test_security_matrix[R17] PASSED              [ 76%]
+tests/test_rbac_matrix.py::test_security_matrix[R18] PASSED              [ 77%]
+tests/test_rbac_matrix.py::test_security_matrix[R19] XFAIL (FINDING:...) [ 79%]
+tests/test_rbac_matrix.py::test_security_matrix[R20] XFAIL (FINDING:...) [ 81%]
+tests/test_rbac_matrix.py::test_security_matrix[R21] XFAIL (FINDING:...) [ 83%]
+tests/test_rbac_matrix.py::test_security_matrix[R22] XFAIL (FINDING:...) [ 84%]
+tests/test_users.py::TestGetUser::test_default_list_has_users_and_paging_fields PASSED [ 86%]
+tests/test_users.py::TestGetUser::test_existing_user_matches_schema PASSED [ 88%]
+tests/test_users.py::TestGetUser::test_unknown_id_returns_404 PASSED     [ 89%]
+tests/test_users.py::TestGetUser::test_invalid_id_returns_400 PASSED     [ 91%]
+tests/test_users.py::TestGetUser::test_filter_by_role_returns_only_that_role PASSED [ 93%]
+tests/test_users.py::TestUpdateUser::test_update_echoes_the_change PASSED [ 94%]
+tests/test_users.py::TestUpdateUser::test_update_is_simulated_not_persisted PASSED [ 96%]
+tests/test_users.py::TestDeleteUser::test_delete_returns_deleted_marker PASSED [ 98%]
+tests/test_users.py::TestDeleteUser::test_delete_is_simulated_not_persisted PASSED [100%]
+
+----- generated xml file: /Users/fatemar/Desktop/space42/reports/junit.xml -----
+=============================== security summary ===============================
+contract checks passed: 38    findings: 21
+  [low   ][auth     ] invalid expiresInMins returns 500 instead of a 400 validation error
+  [low   ][auth     ] invalid token returns 500 'invalid token' instead of 401
+  [medium][auth     ] a refresh token is accepted as an access token
+  [medium][auth     ] an access token is accepted as a refresh token
+  [medium][auth     ] session cookies have no SameSite attribute
+  [medium][auth     ] the session cookie alone authorizes state-changing requests (no CSRF protection)
+  [medium][auth     ] CORS reflects any origin with Access-Control-Allow-Credentials: true
+  [high  ][exposure ] public user list exposes password/ssn/ein/bank/crypto
+  [high  ][exposure ] public single-user record exposes password/ssn/ein/bank/crypto
+  [high  ][exposure ] /auth/me returns the caller's own password
+  [medium][auth     ] writes must require authentication
+  [medium][auth     ] deletes must require authentication
+  [high  ][ownership] a user must not read another user's record
+  [high  ][ownership] a user must not modify another user's record
+  [high  ][ownership] a user must not delete another user's record
+  [high  ][ownership] a user must not read another user's carts
+  [high  ][rbac     ] a user must not escalate their own role
+  [high  ][auth     ] account creation must require authentication (anyone can create an admin)
+  [high  ][ownership] a user's carts must not be readable without authentication
+  [medium][rbac     ] identity fields such as id must be immutable
+  [medium][rbac     ] a user must not take another user's username
+- Generated html report: file:///Users/fatemar/Desktop/space42/reports/report.html -
+======================= 38 passed, 21 xfailed in 23.78s ========================

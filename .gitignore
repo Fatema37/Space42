@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+reports/
+logs/
+.DS_Store
+.idea/
+
+# Space42 assessment brief — proprietary/confidential, keep out of the repo
+Space42_QA_Automation_Assessment.pdf

@@ -1,0 +1,7 @@
+pytest==8.3.4
+requests==2.32.3
+pydantic==2.10.4            # response models = schema oracle
+pydantic-settings==2.7.1    # typed config from env
+python-dotenv==1.0.1        # .env loading
+pytest-html==4.1.1          # self-contained HTML report (a deliverable)
+pytest-metadata==3.1.1      # stamps env/git into the report header

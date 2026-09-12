@@ -1,0 +1,64 @@
+name: API security tests
+run-name: "${{ github.workflow }} — make ${{ inputs.suite || 'test' }}"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:                 # "Run workflow" button in the Actions tab
+    inputs:
+      suite:
+        description: "Which part to run (a make target)"
+        type: choice
+        default: test
+        options: [test, auth, users, matrix, exposure, findings, contract]
+      verbose:
+        description: "Print every request and response in the log"
+        type: boolean
+        default: false
+
+# Never run two suites at the same time against the shared public API.
+concurrency:
+  group: api-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # Extra pytest options; only set when the manual run asked for verbose logging.
+      PYTEST_ADDOPTS: ${{ inputs.verbose == true && '-o log_cli=true' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      # The same commands the README documents.
+      - name: Install
+        run: make install
+
+      - name: Run (make ${{ inputs.suite || 'test' }})
+        run: make ${{ inputs.suite || 'test' }}
+
+      # The findings table shows on the run's summary page (even if the run failed).
+      - name: Publish findings to the job summary
+        if: always()
+        run: |
+          echo "## Security findings" >> "$GITHUB_STEP_SUMMARY"
+          cat reports/findings.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || echo "_no findings file produced_" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report and log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: |
+            reports/
+            logs/
