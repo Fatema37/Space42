@@ -127,8 +127,6 @@ clean-checkout checks.
 
 ## AI-assisted development
 
-Claude Code (Anthropic) was used as a pair-programmer: design discussion, probing the API,
-drafting the code and tests, and two simplification passes that removed machinery I could
-not justify. Every file was read and understood before being kept; every finding was
-reproduced by hand in Postman; the suite was run against the live API from clean checkouts
-on Python 3.12 and 3.13. Responsibility for the submission is mine.
+Claude Code (Anthropic) assisted with design, drafting and review. I reviewed every file,
+reproduced each finding by hand in Postman, and ran the suite against the live API before
+submitting. The submission — its correctness, security and explainability — is mine.
