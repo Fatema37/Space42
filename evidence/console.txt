@@ -1,8 +1,8 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.12.13, pytest-8.3.4, pluggy-1.6.0 -- /Users/fatemar/Desktop/space42/.venv/bin/python
+platform darwin -- Python 3.12.13, pytest-8.3.4, pluggy-1.6.0 -- ./.venv/bin/python
 cachedir: .pytest_cache
 metadata: {'Python': '3.12.13', 'Platform': 'macOS-15.3.1-arm64-arm-64bit', 'Packages': {'pytest': '8.3.4', 'pluggy': '1.6.0'}, 'Plugins': {'html': '4.1.1', 'metadata': '3.1.1'}, 'Target': 'https://dummyjson.com'}
-rootdir: /Users/fatemar/Desktop/space42
+rootdir: .
 configfile: pytest.ini
 testpaths: tests
 plugins: html-4.1.1, metadata-3.1.1
@@ -68,7 +68,7 @@ tests/test_users.py::TestUpdateUser::test_update_is_simulated_not_persisted PASS
 tests/test_users.py::TestDeleteUser::test_delete_returns_deleted_marker PASSED [ 98%]
 tests/test_users.py::TestDeleteUser::test_delete_is_simulated_not_persisted PASSED [100%]
 
------ generated xml file: /Users/fatemar/Desktop/space42/reports/junit.xml -----
+----- generated xml file: ./reports/junit.xml -----
 =============================== security summary ===============================
 contract checks passed: 38    findings: 21
   [low   ][auth     ] invalid expiresInMins returns 500 instead of a 400 validation error
@@ -92,5 +92,5 @@ contract checks passed: 38    findings: 21
   [high  ][ownership] a user's carts must not be readable without authentication
   [medium][rbac     ] identity fields such as id must be immutable
   [medium][rbac     ] a user must not take another user's username
-- Generated html report: file:///Users/fatemar/Desktop/space42/reports/report.html -
-======================= 38 passed, 21 xfailed in 35.76s ========================
+- Generated html report: file://./reports/report.html -
+======================= 38 passed, 21 xfailed in 24.57s ========================

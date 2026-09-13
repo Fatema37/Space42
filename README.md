@@ -14,7 +14,7 @@ from the public `/users` directory at run time.
 
 ## Install
 
-Requires **Python 3.12** (3.10–3.13 also work).
+Requires **Python 3.10–3.13** (3.12 recommended).
 
 ```bash
 make install          # creates .venv, installs pinned deps, copies .env.example -> .env
@@ -36,6 +36,9 @@ make report           # open the HTML report
 
 Other targets: `make auth | users | matrix | exposure | findings | contract` run one slice;
 `make evidence` snapshots the results into `evidence/`; `make help` lists everything.
+
+**CI:** GitHub Actions runs `make test` on every push and pull request
+(`.github/workflows/tests.yml`) and posts the pass / finding counts on the run summary.
 
 **Reading the result:** every check is either **documented behaviour** (`contract`, should
 pass) or a **security expectation** (`security_hypothesis`, marked "expected to fail" so a

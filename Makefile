@@ -46,7 +46,7 @@ report:          ## open the last HTML report (macOS / Linux; otherwise open the
 
 evidence:        ## run the suite and snapshot the results into evidence/ (ships with the submission)
 	mkdir -p evidence
-	set -o pipefail; $(PYTEST) | tee evidence/console.txt
+	set -o pipefail; $(PYTEST) | sed "s|$(CURDIR)|.|g" | tee evidence/console.txt   # strip the local absolute path
 	cp reports/report.html reports/junit.xml reports/findings.md evidence/
 	@echo "snapshot written to evidence/ (report.html, junit.xml, findings.md, console.txt)"
 

@@ -151,8 +151,9 @@ class TestRefresh:
 
 
 def _cookie_flags(set_cookie: str) -> set:
-    """Attribute NAMES from a Set-Cookie header, lower-cased. Values (the tokens) are
-    dropped on purpose so they can never appear in an assertion message or the report."""
+    """Attribute names from a Set-Cookie header, lower-cased (values dropped so a token can
+    never reach an assertion message or the report). Commas are treated as separators, so a
+    date like 'Expires=Wed, 21 Oct' adds harmless junk tokens — we only look for known names."""
     return {part.split("=", 1)[0].strip().lower() for part in set_cookie.replace(",", ";").split(";")}
 
 
@@ -190,6 +191,8 @@ class TestCookieSession:
     @pytest.mark.owasp("API2")
     @pytest.mark.xfail(reason="FINDING: the session cookie alone authorizes state-changing requests (no CSRF protection)")
     def test_cookie_alone_cannot_change_data(self, cookie_client):
+        # PUT /auth/users/{id} — the PROTECTED path (update_user defaults to protected=True),
+        # with only the login cookie and no Authorization header.
         body, status = users.update_user(cookie_client, cookie_client.user_id, {"lastName": "Test"})
         assert status in (401, 403), f"expected a cookie-only write to be refused, got {status}"
 
